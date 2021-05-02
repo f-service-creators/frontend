@@ -15,4 +15,4 @@ ignorePatterns:
 plugins:
   - react
   - '@typescript-eslint'
-rules: {"semi": ["error", "always"],quotes:["error","double"],camelcase:"off"}
+rules: {"semi": ["error", "always"],quotes:["error","double"],camelcase: 0}

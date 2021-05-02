@@ -1,7 +1,20 @@
 import { useCollectionData } from "react-firebase-hooks/firestore"
 import firebase from "firebase"
 import React from "react"
+import { makeStyles } from "@material-ui/core/styles"
+import Table from "@material-ui/core/Table"
+import TableBody from "@material-ui/core/TableBody"
+import TableCell from "@material-ui/core/TableCell"
+import TableContainer from "@material-ui/core/TableContainer"
+import TableHead from "@material-ui/core/TableHead"
+import TableRow from "@material-ui/core/TableRow"
+import Paper from "@material-ui/core/Paper"
 
+const useStyles = makeStyles({
+    table: {
+        minWidth: 650,
+    },
+})
 const firebaseConfig = {
     projectId: import.meta.env.VITE_PROJECT_ID,
     appId: import.meta.env.VITE_APP_ID,
@@ -17,6 +30,7 @@ if (firebase.apps.length === 0) {
     firebase.initializeApp(firebaseConfig)
 }
 const Subsidies = () => {
+    const classes = useStyles()
     console.log("Start connect to firestore")
     console.log(import.meta.env.VITE_MEASUREMENT_ID)
     const [values, loading, error] = useCollectionData(
@@ -37,13 +51,35 @@ const Subsidies = () => {
     if (typeof values === "undefined") {
         return <div>No Data</div>
     }
-    const listItems = values.map((value) => (
-        <li key={value.id}>{value.title}</li>
-    ))
     return (
-        <div>
-            <ul>{listItems}</ul>
-        </div>
+        <TableContainer component={Paper}>
+            <Table className={classes.table} aria-label="simple table">
+                <TableHead>
+                    <TableRow>
+                        <TableCell>タイトル</TableCell>
+                        <TableCell align="right">ターゲット</TableCell>
+                        <TableCell align="right">概要</TableCell>
+                        <TableCell align="right">支援組織</TableCell>
+                        <TableCell align="right">問い合わせ先</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {values.map((value) => (
+                        <TableRow key={value.id}>
+                            <TableCell component="th" scope="row">
+                                {value.title}
+                            </TableCell>
+                            <TableCell align="right">{value.target}</TableCell>
+                            <TableCell align="right">{value.summary}</TableCell>
+                            <TableCell align="right">
+                                {value.support_organization}
+                            </TableCell>
+                            <TableCell align="right">{value.inquiry}</TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
     )
 }
 
