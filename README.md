@@ -1,27 +1,36 @@
-# React + Typescript + Vite
+# 補助金まとめサイト
 
-This template should help get you started developing with Vue 3 and Typescript in Vite.
+## Frontend Apps
 
-## Recommended IDE Setup
+### firebase config の設定方法
 
-[VSCode](https://code.visualstudio.com/) + [Vetur](https://marketplace.visualstudio.com/items?itemName=octref.vetur). Make sure to enable `vetur.experimental.templateInterpolationService` in settings!
+1. 前提条件 firebase CLI をインストールする
+   `npm install -g firebase-tools`
+   プロジェクトに依らずに使用するためグローバルインストールとする
 
-### If Using `<script setup>`
+2. Google アカウントで Firebase にログインする
+   `firebase login`
 
-[`<script setup>`](https://github.com/vuejs/rfcs/pull/227) is a feature that is currently in RFC stage. To get proper IDE support for the syntax, use [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar) instead of Vetur (and disable Vetur).
+3. 自身が確認できるプロジェクトを確認する
+   `firebase projects:list`
+   自身のアカウントで有効なプロジェクトのリストが表示される
 
-## Type Support For `.vue` Imports in TS
+4. 使用するプロジェクトを設定する
+   `firebase use [alias_or_project_id]`
+   上記で確認したプロジェクト ID を設定する
 
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can use the following:
+5. firebase config を確認する
+   ※クラウド側の firebase の WEB app の設定が完了していること
 
-### If Using Volar
+以下のコマンドを実行し設定を確認する
+`firebase apps:sdkconfig`
+以下の記述が表示される。この設定値を利用する
 
-Run `Volar: Switch TS Plugin on/off` from VSCode command palette.
+```
+firebase.initializeApp({
+  "projectId"
+```
 
-### If Using Vetur
-
-1. Install and add `@vuedx/typescript-plugin-vue` to the [plugins section](https://www.typescriptlang.org/tsconfig#plugins) in `tsconfig.json`
-2. Delete `src/shims-vue.d.ts` as it is no longer needed to provide module info to Typescript
-3. Open `src/main.ts` in VSCode
-4. Open the VSCode command palette
-5. Search and run "Select TypeScript version" -> "Use workspace version"
+6. 環境変数に config の値をセットする
+   .env.sample ファイルをコピーし、.env ファイルを作成する
+   各変数に対応する値を上記のコマンドの結果を参照し、設定する
