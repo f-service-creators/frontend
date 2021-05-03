@@ -31,7 +31,7 @@ const firebaseConfig = {
 if (firebase.apps.length === 0) {
   firebase.initializeApp(firebaseConfig);
 }
-const Subsidies = () => {
+const Subsidies = (props) => {
   const classes = useStyles();
   console.log("Start connect to firestore");
   console.log(import.meta.env.VITE_MEASUREMENT_ID);
@@ -54,6 +54,7 @@ const Subsidies = () => {
   if (typeof values === "undefined") {
     return <div>No Data</div>;
   }
+
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="simple table">
@@ -67,11 +68,17 @@ const Subsidies = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {values.map((value) => (
+          {values.filter((item) => {
+             console.log("TYPE:"+typeof(props.target));
+             const has_keyword = (x: (string | undefined), word: string) => {
+                return (x !== undefined) && (x.search(word) !== -1);
+             };
+             return has_keyword(item.title,props.name) || has_keyword(item.summary,props.name)
+              || has_keyword(item.support_organization,props.name) || has_keyword(item.inquiry,props.name)
+              || has_keyword(item.title,props.name);
+           }).map((value) => (
             <TableRow key={value.id}>
-              <TableCell component="th" scope="row">
-                {value.title}
-              </TableCell>
+              <TableCell component="th" scope="row"> {value.title} </TableCell>
               <TableCell align="right">{value.target}</TableCell>
               <TableCell align="right">{value.summary}</TableCell>
               <TableCell align="right">{value.support_organization}</TableCell>
