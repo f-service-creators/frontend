@@ -12,6 +12,11 @@ import {
 } from "@material-ui/core";
 import {Paper} from "@material-ui/core";
 
+type SubsidyProps = {
+  children?: never;
+  keyword: string;
+};
+
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
@@ -31,17 +36,16 @@ const firebaseConfig = {
 if (firebase.apps.length === 0) {
   firebase.initializeApp(firebaseConfig);
 }
-const Subsidies = (props) => {
+const Subsidies: React.FC<SubsidyProps> = (props: SubsidyProps) => {
   const classes = useStyles();
   console.log("Start connect to firestore");
   console.log(import.meta.env.VITE_MEASUREMENT_ID);
-  const [
-    values,
-    loading,
-    error,
-  ] = useCollectionData(firebase.firestore().collection("subsidy"), {
-    idField: "id",
-  });
+  const [values, loading, error] = useCollectionData(
+    firebase.firestore().collection("subsidy"),
+    {
+      idField: "id",
+    }
+  );
   console.log("Proccessing connect to firestore");
   if (loading) {
     return <div>Loading...</div>;
@@ -68,23 +72,31 @@ const Subsidies = (props) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {values.filter((item) => {
-             console.log("TYPE:"+typeof(props.target));
-             const has_keyword = (x: (string | undefined), word: string) => {
-                return (x !== undefined) && (x.search(word) !== -1);
-             };
-             return has_keyword(item.title,props.name) || has_keyword(item.summary,props.name)
-              || has_keyword(item.support_organization,props.name) || has_keyword(item.inquiry,props.name)
-              || has_keyword(item.title,props.name);
-           }).map((value) => (
-            <TableRow key={value.id}>
-              <TableCell component="th" scope="row"> {value.title} </TableCell>
-              <TableCell align="right">{value.target}</TableCell>
-              <TableCell align="right">{value.summary}</TableCell>
-              <TableCell align="right">{value.support_organization}</TableCell>
-              <TableCell align="right">{value.inquiry}</TableCell>
-            </TableRow>
-          ))}
+          {values
+            .filter((item) => {
+              // console.log("TYPE:" + typeof props.target);
+              const has_keyword = (x: string | undefined, word: string) => {
+                if (typeof x !== "string") return false;
+                return x.search(word) !== -1;
+              };
+              return Object.values(item).some((target) =>
+                has_keyword(target, props.keyword)
+              );
+            })
+            .map((value) => (
+              <TableRow key={value.id}>
+                <TableCell component="th" scope="row">
+                  {" "}
+                  {value.title}{" "}
+                </TableCell>
+                <TableCell align="right">{value.target}</TableCell>
+                <TableCell align="right">{value.summary}</TableCell>
+                <TableCell align="right">
+                  {value.support_organization}
+                </TableCell>
+                <TableCell align="right">{value.inquiry}</TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
     </TableContainer>
