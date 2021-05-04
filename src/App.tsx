@@ -3,6 +3,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import Subsidies from "./components/SubsidyList";
 import StickyFooter from "./components/StickyFooter";
+import SearchTextField from "./components/SearchTextField"
 
 const App = () => {
   return (
@@ -11,9 +12,6 @@ const App = () => {
         <img src={logo} className="App-logo" alt="logo" />
         <p>補助金のまとめ</p>
 
-        <p>
-          <Subsidies />
-        </p>
         <p>
           <a
             className="App-link"
@@ -34,6 +32,9 @@ const App = () => {
           </a>
         </p>
       </header>
+      <p>
+        <SearchTextField />
+      </p>
       <StickyFooter />
     </div>
   );
