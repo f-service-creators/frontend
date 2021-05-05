@@ -23,4 +23,6 @@ rules:
     quotes: ["error", "double"],
     camelcase: 0,
     indent: "off",
+    no-unused-vars: "off",
+    "@typescript-eslint/no-unused-vars": ["error"],
   }

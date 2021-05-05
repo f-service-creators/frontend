@@ -12,8 +12,7 @@ import {
 } from "@material-ui/core";
 import {Paper} from "@material-ui/core";
 import {Button} from "@material-ui/core";
-import {Link, Route} from "react-router-dom";
-import SubsidyDetail from "./SubsidyDeail";
+import {Link} from "react-router-dom";
 
 type SubsidyProps = {
   children?: never;

@@ -5,7 +5,7 @@ import ListItem, {ListItemProps} from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 type SubsidyDetailProps = {
-  values: object;
+  values: subsidy.TargetContent;
 };
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
