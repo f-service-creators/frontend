@@ -11,6 +11,9 @@ import {
   TableRow,
 } from "@material-ui/core";
 import {Paper} from "@material-ui/core";
+import {Button} from "@material-ui/core";
+import {Link, Route} from "react-router-dom";
+import SubsidyDetail from "./SubsidyDeail";
 
 type SubsidyProps = {
   children?: never;
@@ -69,6 +72,7 @@ const Subsidies: React.FC<SubsidyProps> = (props: SubsidyProps) => {
             <TableCell align="right">概要</TableCell>
             <TableCell align="right">支援組織</TableCell>
             <TableCell align="right">問い合わせ先</TableCell>
+            <TableCell align="right">詳細</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -83,18 +87,25 @@ const Subsidies: React.FC<SubsidyProps> = (props: SubsidyProps) => {
                 has_keyword(target, props.keyword)
               );
             })
-            .map((value) => (
-              <TableRow key={value.id}>
+            .map((values) => (
+              <TableRow key={values.id}>
                 <TableCell component="th" scope="row">
                   {" "}
-                  {value.title}{" "}
+                  {values.title}{" "}
                 </TableCell>
-                <TableCell align="right">{value.target}</TableCell>
-                <TableCell align="right">{value.summary}</TableCell>
+                <TableCell align="right">{values.target}</TableCell>
+                <TableCell align="right">{values.summary}</TableCell>
                 <TableCell align="right">
-                  {value.support_organization}
+                  {values.support_organization}
                 </TableCell>
-                <TableCell align="right">{value.inquiry}</TableCell>
+                <TableCell align="right">{values.inquiry}</TableCell>
+                <TableCell align="right">
+                  <Link to="/detail">
+                    <Button variant="contained" color="primary">
+                      詳細
+                    </Button>
+                  </Link>
+                </TableCell>
               </TableRow>
             ))}
         </TableBody>

@@ -1,8 +1,9 @@
 import React from "react";
 import logo from "./logo.svg";
-import {Switch, Route, Redirect} from "react-router-dom";
+import {BrowserRouter, Switch, Route, Redirect} from "react-router-dom";
 // import routes from "./routes";
 import Home from "./pages/Home";
+import Detail from "./pages/Detail";
 import StickyFooter from "./components/StickyFooter";
 import "./App.css";
 const Default = () => {
@@ -13,11 +14,14 @@ const Default = () => {
         <p>補助金のまとめ</p>
       </header>
       <main>
-        <Switch>
-          <Route exact={true} path="/" component={Home} />
-          {/* Not Found */}
-          <Route component={() => <Redirect to="/" />} />
-        </Switch>
+        <BrowserRouter>
+          <Switch>
+            <Route exact={true} path="/" component={Home} />
+            <Route path="/detail" component={Detail} />
+            {/* Not Found */}
+            <Route component={() => <Redirect to="/" />} />
+          </Switch>
+        </BrowserRouter>
       </main>
       <footer style={styles.footer}>
         <StickyFooter />
