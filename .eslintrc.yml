@@ -2,10 +2,10 @@ env:
   browser: true
   es2021: true
 extends:
-  - 'eslint:recommended'
-  - 'plugin:react/recommended'
+  - "eslint:recommended"
+  - "plugin:react/recommended"
   - google
-parser: '@typescript-eslint/parser'
+parser: "@typescript-eslint/parser"
 parserOptions:
   ecmaFeatures:
     jsx: true
@@ -15,6 +15,14 @@ ignorePatterns:
   - "/dist"
 plugins:
   - react
-  - '@typescript-eslint'
-settings: {"react": { "version": "detect"}}
-rules: {"semi": ["error", "always"], quotes:["error","double"],camelcase: 0}
+  - "@typescript-eslint"
+settings: {"react": {"version": "detect"}}
+rules:
+  {
+    semi: ["error", "always"],
+    quotes: ["error", "double"],
+    camelcase: 0,
+    indent: "off",
+    no-unused-vars: "off",
+    "@typescript-eslint/no-unused-vars": ["error"],
+  }
