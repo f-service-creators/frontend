@@ -59,6 +59,16 @@ const Subsidies: React.FC<SubsidyProps> = (props: SubsidyProps) => {
   if (typeof values === "undefined") {
     return <div>No Data</div>;
   }
+  const filteredList = values.filter((item) => {
+    // console.log("TYPE:" + typeof props.target);
+    const has_keyword = (x: string | undefined, word: string) => {
+      if (typeof x !== "string") return false;
+      return x.search(word) !== -1;
+    };
+    return Object.values(item).some((target) =>
+      has_keyword(target, props.keyword)
+    );
+  });
 
   return (
     <TableContainer component={Paper}>
@@ -66,46 +76,35 @@ const Subsidies: React.FC<SubsidyProps> = (props: SubsidyProps) => {
         <TableHead>
           <TableRow>
             <TableCell>タイトル</TableCell>
-            <TableCell align="right">ターゲット</TableCell>
             <TableCell align="right">概要</TableCell>
             <TableCell align="right">支援組織</TableCell>
-            <TableCell align="right">問い合わせ先</TableCell>
+            <TableCell align="right">最終更新日</TableCell>
             <TableCell align="right">詳細</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {values
-            .filter((item) => {
-              // console.log("TYPE:" + typeof props.target);
-              const has_keyword = (x: string | undefined, word: string) => {
-                if (typeof x !== "string") return false;
-                return x.search(word) !== -1;
-              };
-              return Object.values(item).some((target) =>
-                has_keyword(target, props.keyword)
-              );
-            })
-            .map((values) => (
-              <TableRow key={values.id}>
-                <TableCell component="th" scope="row">
-                  {" "}
-                  {values.title}{" "}
-                </TableCell>
-                <TableCell align="right">{values.target}</TableCell>
-                <TableCell align="right">{values.summary}</TableCell>
-                <TableCell align="right">
-                  {values.support_organization}
-                </TableCell>
-                <TableCell align="right">{values.inquiry}</TableCell>
-                <TableCell align="right">
-                  <Link to={{pathname: "/detail", state: {values}}}>
-                    <Button variant="contained" color="primary">
-                      詳細
-                    </Button>
-                  </Link>
-                </TableCell>
-              </TableRow>
-            ))}
+          {filteredList.map((values) => (
+            <TableRow key={values.id}>
+              <TableCell component="th" scope="row">
+                {" "}
+                {values.title}{" "}
+              </TableCell>
+              <TableCell align="right">{values.summary}</TableCell>
+              <TableCell align="right">
+                {values.competent_authorities[0].name}
+              </TableCell>
+              <TableCell align="right">
+                {values.competent_authorities[0].update_info.last_modified_at}
+              </TableCell>
+              <TableCell align="right">
+                <Link to={{pathname: "/detail", state: {values}}}>
+                  <Button variant="contained" color="primary">
+                    詳細
+                  </Button>
+                </Link>
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
     </TableContainer>

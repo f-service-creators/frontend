@@ -38,7 +38,7 @@ const styles = {
     background: "#ddd",
   },
   main: {
-    height: 200,
+    height: 500,
   },
   footer: {
     height: 100,
