@@ -42,7 +42,6 @@ if (firebase.apps.length === 0) {
 const Subsidies: React.FC<SubsidyProps> = (props: SubsidyProps) => {
   const classes = useStyles();
   console.log("Start connect to firestore");
-  console.log(import.meta.env.VITE_MEASUREMENT_ID);
   const [values, loading, error] = useCollectionData(
     firebase.firestore().collection("subsidy"),
     {
@@ -100,7 +99,7 @@ const Subsidies: React.FC<SubsidyProps> = (props: SubsidyProps) => {
                 </TableCell>
                 <TableCell align="right">{values.inquiry}</TableCell>
                 <TableCell align="right">
-                  <Link to="/detail">
+                  <Link to={{pathname: "/detail", state: {values}}}>
                     <Button variant="contained" color="primary">
                       詳細
                     </Button>
