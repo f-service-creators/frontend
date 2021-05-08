@@ -1,9 +1,8 @@
 import React from "react";
 import {createStyles, Theme, makeStyles} from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
-import ListItem, {ListItemProps} from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
+import {Box, Container, Typography, Paper} from "@material-ui/core";
+import {Card, CardContent, CardHeader, CardActions} from "@material-ui/core";
+import ReactMarkdown from "react-markdown";
 type SubsidyDetailProps = {
   values: subsidy.TargetContent;
 };
@@ -14,6 +13,12 @@ const useStyles = makeStyles((theme: Theme) =>
       maxWidth: 1080,
       backgroundColor: theme.palette.background.paper,
     },
+    card: {
+      border: "2px solid",
+      borderColor: "#E7EDF3",
+      borderRadius: 16,
+      transition: "0.4s",
+    },
   })
 );
 const SubsidyDetail: React.FC<SubsidyDetailProps> = (
@@ -22,34 +27,51 @@ const SubsidyDetail: React.FC<SubsidyDetailProps> = (
   const classes = useStyles();
   console.log(props.values);
   return (
-    <div className={classes.root}>
-      <List aria-label="subsidy data details">
-        <ListItem>
-          <ListItemText primary={props.values.title} />
-        </ListItem>
-        <ListItem>
-          <ListItemText primary={props.values.subtitle} />
-        </ListItem>
-        <ListItem>
-          <ListItemText secondary={props.values.summary} />
-        </ListItem>
-        <ListItem>
-          <ListItemText secondary={props.values.target} />
-        </ListItem>
-        <ListItem>
-          <ListItemText secondary={props.values.usage} />
-        </ListItem>
-        <ListItem>
-          <ListItemText secondary={props.values.inquiry} />
-        </ListItem>
-        <ListItem>
-          <ListItemText secondary={props.values.keywords} />
-        </ListItem>
-      </List>
-      {/* {Object.values(props.values).map((value) => {
-        <p>{value}</p>;
-      })} */}
-    </div>
+    <Box className={classes.root}>
+      <Container maxWidth="lg">
+        <Typography variant="subtitle1">{props.values.subtitle}</Typography>
+        <Typography variant="h3">{props.values.title}</Typography>
+        <Paper>
+          <Typography variant="body1">{props.values.summary}</Typography>
+        </Paper>
+        <Typography variant="h6" color="textSecondary" component="p">
+          制度番号：{props.values.number}
+        </Typography>
+        <Card className={classes.card}>
+          <CardHeader title="対象者" align="left" />
+          <CardContent>
+            <Typography variant="body1" color="textSecondary" component="p">
+              {props.values.target}
+            </Typography>
+          </CardContent>
+        </Card>
+        <Card className={classes.card}>
+          <CardHeader title="内容" align="left" />
+          <CardContent>
+            <Typography variant="body1" color="textSecondary" component="p">
+              <ReactMarkdown children={props.values.body} skipHtml={true} />
+            </Typography>
+          </CardContent>
+        </Card>
+
+        <Card className={classes.card}>
+          <CardHeader title="利用・申請方法" align="left" />
+          <CardContent>
+            <Typography variant="body1" color="textSecondary" component="p">
+              {props.values.usage}
+            </Typography>
+          </CardContent>
+        </Card>
+        <Card className={classes.card}>
+          <CardHeader title="お問い合わせ先" align="left" />
+          <CardContent>
+            <Typography variant="body1" color="textSecondary" component="p">
+              {props.values.inquiry}
+            </Typography>
+          </CardContent>
+        </Card>
+      </Container>
+    </Box>
   );
 };
 
