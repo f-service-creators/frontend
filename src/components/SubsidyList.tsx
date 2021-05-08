@@ -1,29 +1,41 @@
 import {useCollectionData} from "react-firebase-hooks/firestore";
 import firebase from "firebase";
 import React from "react";
-import {makeStyles} from "@material-ui/core/styles";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@material-ui/core";
-import {Paper} from "@material-ui/core";
-import {Button} from "@material-ui/core";
 import {Link} from "react-router-dom";
-
+import {createStyles, Theme, makeStyles} from "@material-ui/core/styles";
+import {Box, Container, Typography, Paper} from "@material-ui/core";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardActions,
+  CardActionArea,
+} from "@material-ui/core";
 type SubsidyProps = {
   children?: never;
   keyword: string;
 };
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      width: "100%",
+      maxWidth: 1080,
+      backgroundColor: theme.palette.background.paper,
+    },
+    card: {
+      border: "2px solid",
+      borderColor: "#E7EDF3",
+      borderRadius: 16,
+      transition: "0.4s",
+      width: "100%",
+      maxWidth: 1080,
+    },
+    table: {
+      minWidth: 650,
+    },
+  })
+);
 
-const useStyles = makeStyles({
-  table: {
-    minWidth: 650,
-  },
-});
 const firebaseConfig = {
   projectId: import.meta.env.VITE_PROJECT_ID,
   appId: import.meta.env.VITE_APP_ID,
@@ -71,43 +83,52 @@ const Subsidies: React.FC<SubsidyProps> = (props: SubsidyProps) => {
   });
 
   return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>タイトル</TableCell>
-            <TableCell align="right">概要</TableCell>
-            <TableCell align="right">支援組織</TableCell>
-            <TableCell align="right">最終更新日</TableCell>
-            <TableCell align="right">詳細</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
+    <div>
+      <Typography variant="h4" color="textPrimary" component="p">
+        {filteredList.length}件の補助金が見つかりました
+      </Typography>
+      <Box className={classes.root}>
+        <Container maxWidth="lg">
           {filteredList.map((values) => (
-            <TableRow key={values.id}>
-              <TableCell component="th" scope="row">
-                {" "}
-                {values.title}{" "}
-              </TableCell>
-              <TableCell align="right">{values.summary}</TableCell>
-              <TableCell align="right">
-                {values.competent_authorities[0].name}
-              </TableCell>
-              <TableCell align="right">
-                {values.competent_authorities[0].update_info.last_modified_at}
-              </TableCell>
-              <TableCell align="right">
-                <Link to={{pathname: "/detail", state: {values}}}>
-                  <Button variant="contained" color="primary">
-                    詳細
-                  </Button>
+            <Card className={classes.card} key={values.id}>
+              <CardActionArea>
+                <Link
+                  to={{pathname: "/detail", state: {values}}}
+                  style={{textDecoration: "none"}}
+                >
+                  <CardHeader
+                    title={values.title}
+                    subheader={values.competent_authorities[0].name}
+                  />
+                  <CardContent>
+                    <Typography
+                      variant="body1"
+                      color="textSecondary"
+                      component="p"
+                    >
+                      {values.summary}
+                    </Typography>
+                  </CardContent>
+                  <CardContent>
+                    <Typography
+                      variant="body2"
+                      color="textSecondary"
+                      component="p"
+                    >
+                      最終更新日：
+                      {
+                        values.competent_authorities[0].update_info
+                          .last_modified_at
+                      }
+                    </Typography>
+                  </CardContent>
                 </Link>
-              </TableCell>
-            </TableRow>
+              </CardActionArea>
+            </Card>
           ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+        </Container>
+      </Box>
+    </div>
   );
 };
 
