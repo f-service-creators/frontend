@@ -10,8 +10,9 @@ const Default = () => {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>補助金のまとめ</p>
+        {/* <img src={logo} className="App-logo" alt="logo" /> */}
+        <h1>補助金のまとめ</h1>
+        <p>中小企業向けの補助金が探せる検索サイトです</p>
       </header>
       <main>
         <BrowserRouter>
@@ -23,7 +24,7 @@ const Default = () => {
           </Switch>
         </BrowserRouter>
       </main>
-      <footer style={styles.footer}>
+      <footer>
         <StickyFooter />
       </footer>
     </div>
