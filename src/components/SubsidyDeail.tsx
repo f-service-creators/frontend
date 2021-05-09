@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       width: "100%",
-      maxWidth: 1080,
+      maxWidth: 2080,
       backgroundColor: theme.palette.background.paper,
     },
     card: {
@@ -18,6 +18,10 @@ const useStyles = makeStyles((theme: Theme) =>
       borderColor: "#E7EDF3",
       borderRadius: 16,
       transition: "0.4s",
+      maxWidth: 2080,
+    },
+    cardContent: {
+      textAlign: "left",
     },
   })
 );
@@ -34,21 +38,21 @@ const SubsidyDetail: React.FC<SubsidyDetailProps> = (
         <Paper>
           <Typography variant="body1">{props.values.summary}</Typography>
         </Paper>
-        <Typography variant="h6" color="textSecondary" component="p">
+        <Typography variant="h6" color="textSecondary">
           制度番号：{props.values.number}
         </Typography>
         <Card className={classes.card}>
           <CardHeader title="対象者" align="left" />
-          <CardContent>
-            <Typography variant="body1" color="textSecondary" component="p">
+          <CardContent className={classes.cardContent}>
+            <Typography variant="body1" color="textSecondary">
               {props.values.target}
             </Typography>
           </CardContent>
         </Card>
         <Card className={classes.card}>
           <CardHeader title="内容" align="left" />
-          <CardContent>
-            <Typography variant="body1" color="textSecondary" component="p">
+          <CardContent className={classes.cardContent}>
+            <Typography variant="body1" color="textSecondary">
               <ReactMarkdown children={props.values.body} skipHtml={true} />
             </Typography>
           </CardContent>
@@ -56,16 +60,16 @@ const SubsidyDetail: React.FC<SubsidyDetailProps> = (
 
         <Card className={classes.card}>
           <CardHeader title="利用・申請方法" align="left" />
-          <CardContent>
-            <Typography variant="body1" color="textSecondary" component="p">
+          <CardContent className={classes.cardContent}>
+            <Typography variant="body1" color="textSecondary">
               {props.values.usage}
             </Typography>
           </CardContent>
         </Card>
         <Card className={classes.card}>
           <CardHeader title="お問い合わせ先" align="left" />
-          <CardContent>
-            <Typography variant="body1" color="textSecondary" component="p">
+          <CardContent className={classes.cardContent}>
+            <Typography variant="body1" color="textSecondary">
               {props.values.inquiry}
             </Typography>
           </CardContent>

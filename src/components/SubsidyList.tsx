@@ -1,6 +1,6 @@
-import {useCollectionData} from "react-firebase-hooks/firestore";
+import {useCollectionDataOnce} from "react-firebase-hooks/firestore";
 import firebase from "firebase";
-import React from "react";
+import React, {useState} from "react";
 import {Link} from "react-router-dom";
 import {createStyles, Theme, makeStyles} from "@material-ui/core/styles";
 import {Box, Container, Typography, Paper} from "@material-ui/core";
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       width: "100%",
-      maxWidth: 1080,
+      maxWidth: 2080,
       backgroundColor: theme.palette.background.paper,
     },
     card: {
@@ -28,7 +28,10 @@ const useStyles = makeStyles((theme: Theme) =>
       borderRadius: 16,
       transition: "0.4s",
       width: "100%",
-      maxWidth: 1080,
+      maxWidth: 2080,
+    },
+    cardContent: {
+      textAlign: "left",
     },
     table: {
       minWidth: 650,
@@ -53,12 +56,21 @@ if (firebase.apps.length === 0) {
 const Subsidies: React.FC<SubsidyProps> = (props: SubsidyProps) => {
   const classes = useStyles();
   console.log("Start connect to firestore");
-  const [values, loading, error] = useCollectionData(
-    firebase.firestore().collection("subsidy"),
+  // if (props.keyword === "") {
+  //   return <div>検索条件を入力してください</div>;
+  // }
+  const [values, loading, error] = useCollectionDataOnce(
+    firebase
+      .firestore()
+      .collection("subsidy")
+      .orderBy("publish_date", "desc")
+      .orderBy("id")
+      .limit(100),
     {
       idField: "id",
     }
   );
+  // const [state, setState] = useState(values);
   console.log("Proccessing connect to firestore");
   if (loading) {
     return <div>Loading...</div>;
@@ -77,9 +89,7 @@ const Subsidies: React.FC<SubsidyProps> = (props: SubsidyProps) => {
       if (typeof x !== "string") return false;
       return x.search(word) !== -1;
     };
-    return Object.values(item).some((target) =>
-      has_keyword(target, props.keyword)
-    );
+    return Object.values(item).some((x) => has_keyword(x, props.keyword));
   });
 
   return (
@@ -100,7 +110,7 @@ const Subsidies: React.FC<SubsidyProps> = (props: SubsidyProps) => {
                     title={values.title}
                     subheader={values.competent_authorities[0].name}
                   />
-                  <CardContent>
+                  <CardContent className={classes.cardContent}>
                     <Typography
                       variant="body1"
                       color="textSecondary"
@@ -117,8 +127,9 @@ const Subsidies: React.FC<SubsidyProps> = (props: SubsidyProps) => {
                     >
                       最終更新日：
                       {
-                        values.competent_authorities[0].update_info
-                          .last_modified_at
+                        values.competent_authorities[0].update_info.last_modified_at.split(
+                          "T"
+                        )[0]
                       }
                     </Typography>
                   </CardContent>
